@@ -7,6 +7,7 @@ export async function POST(req: Request){
     const data = await req.json()
     const { code, lang } = CodeRequestObject.parse(data)
     const result = await CodeRunner(code, lang)
+    console.log(result);
     return NextResponse.json({ message: "Code run successfully", result }, { status: 200 })
   } catch (err) {
     return NextResponse.json({ message: "Oops! something went wrong..", error: err }, { status: 422 })

@@ -7,6 +7,17 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { okaidia } from '@uiw/codemirror-theme-okaidia';
 import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+
+const DemoPaper = styled(Paper)(({ theme }) => ({
+  width: 120,
+  height: 120,
+  padding: theme.spacing(2),
+  ...theme.typography.body2,
+  textAlign: 'center',
+}));
 
 const stateFields = { history: historyField };
 const languages = [
@@ -20,6 +31,7 @@ export default function Home() {
   
   const [lang, setLang] = useState(languages[0])
   const [code, setCode] = useState(prevCode)
+  const [codeResult, setCodeResult] = useState(null)
 
   function handleChange(e: SelectChangeEvent){
     const selectedLang = languages.find(l => l.value === e.target.value)
@@ -27,8 +39,7 @@ export default function Home() {
   }
 
   async function handleCodeSubmit(){
-    console.log(code);
-    console.log(lang.value)
+    setCodeResult(null)
     const request = await fetch("/api/code", {
       method: "POST",
       headers: {
@@ -37,7 +48,7 @@ export default function Home() {
       body: JSON.stringify({code , lang: lang.value})
     })
     const data = await request.json()
-    console.log(data)
+    setCodeResult(data.result)
   }
 
   return (
@@ -82,6 +93,14 @@ export default function Home() {
         >
           Submit
         </Button>
+        {codeResult && 
+          <TextField 
+            className='mt-5'
+            variant="outlined" 
+            value={codeResult} 
+            multiline 
+            fullWidth
+          />}
       </div>
     </main>
   )

@@ -30,7 +30,6 @@ export default async function CodeRunner(code: String, lang="javascript"){
       await container.start()
       container.logs({ follow: true, stdout: true, stderr: true }, (err, stream) => {
         if (err) {
-          console.error('Error capturing logs:', err);
         } else {
           if (stream){
             stream.on('data', (chunk) => {
@@ -38,13 +37,11 @@ export default async function CodeRunner(code: String, lang="javascript"){
             });
 
             stream.on('end', () => {
-              console.log('Final output: ')
               container.remove();
               resolve(output);
             })
 
             stream.on('error', (err) => {
-              console.log('Got some error..', err)
               container.remove();
               resolve(output);
             })
