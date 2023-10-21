@@ -29,7 +29,7 @@ export default function Home() {
   async function handleCodeSubmit(){
     console.log(code);
     console.log(lang.value)
-    const request = await fetch("http://localhost:3000", {
+    const request = await fetch("/api/code", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function Home() {
       body: JSON.stringify({code , lang: lang.value})
     })
     const data = await request.json()
-    alert(data)
+    console.log(data)
   }
 
   return (
